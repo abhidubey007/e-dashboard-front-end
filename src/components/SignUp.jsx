@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
 
+    const navigate = useNavigate()
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
+    useEffect(() => {
+        const auth = localStorage.getItem("userData");
+        if (auth) {
+            navigate('/')
+        }
+    })
 
-    const navigate = useNavigate()
-
-    const collectData = async () => {
+    const onSignUpHandler = async () => {
 
         let result = await fetch("http://localhost:5000/register", {
             method: "post",
@@ -21,12 +28,11 @@ const SignUp = () => {
         result = await result.json()
         // console.log(result)
         localStorage.setItem("userData", JSON.stringify(result))
-
         navigate("/")
     }
 
     return (
-        <div className='signup'>
+        <div className='form'>
             <h1>Register</h1>
             <input className="inputBox" type="text" placeholder="Enter Name"
                 value={name} onChange={(e) => setName(e.target.value)}
@@ -37,7 +43,7 @@ const SignUp = () => {
             <input className="inputBox" type="password" placeholder="Enter password"
                 value={password} onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={collectData} className="appButton" type="button">Sign Up</button>
+            <button onClick={onSignUpHandler} className="appButton" type="button">Sign Up</button>
 
         </div>
     )
