@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <div className='footer'>
-        <h3>E-comm Dashboard &copy; Abhisek Dubey 2022</h3>
+      <h3 style={{ padding: "10px" }}>E-comm Dashboard &copy; Abhisek Dubey 2022</h3>
     </div>
   )
 }

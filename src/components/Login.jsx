@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [inputValue, setInputValue] = useState({
+        email: '',
+        password: ''
+    });
+    const { email, password } = inputValue;
 
     const navigate = useNavigate()
 
@@ -15,10 +18,18 @@ const Login = () => {
         }
     })
 
+    const onChangeHandler = (e) => {
+        setInputValue(() => {
+            return {
+                ...inputValue, [e.target.name]: e.target.value
+            }
+        })
+    }
+
     const onloginHandler = async () => {
         let result = await fetch("http://localhost:5000/login", {
             method: "post",
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify(inputValue),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -37,10 +48,9 @@ const Login = () => {
         <div className='form'>
             <h1>Login</h1>
             <input className="inputBox" type="email" placeholder="User Email"
-                value={email} onChange={(e) => setEmail(e.target.value)}
-            />
+                name='email' value={email} onChange={onChangeHandler} autoComplete="off" />
             <input className="inputBox" type="password" placeholder='User Password'
-                value={password} onChange={(e) => setPassword(e.target.value)}
+                name='password' value={password} onChange={onChangeHandler}
             />
             <button onClick={onloginHandler} className="appButton" type="submit">Login</button>
 

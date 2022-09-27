@@ -1,14 +1,25 @@
+.logo {
+    height: 48px;
+    float: left;
+    margin-left: 20px;
+}
+
 .nav-ul {
     background-color: skyblue;
     padding: 5px;
     margin: 0;
-    text-align: center;
+
+}
+
+.nav-right {
+    text-align: right;
 }
 
 .nav-ul li {
     display: inline-block;
     text-decoration: none;
     padding: 10px;
+    margin-left: 20px;
 }
 
 .nav-ul li a {
@@ -45,4 +56,11 @@
     background-color: skyblue;
     border: none;
     cursor: pointer;
+}
+
+.invalidInput {
+    color: red;
+    display: block;
+    margin-left: 10px;
+    margin-top: -9px;
 }

@@ -4,11 +4,21 @@ import { useNavigate } from 'react-router-dom'
 const SignUp = () => {
 
     const navigate = useNavigate()
+    const [inputValue, setInputValue] = useState({
+        name: '',
+        email: '',
+        password: ''
+    })
+    const { name, email, password } = inputValue;
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    
+    const onChangeHandler = (e) => {
+        setInputValue(() => {
+            return {
+                ...inputValue, [e.target.name]: e.target.value
+            }
+        })
+    }
+
     useEffect(() => {
         const auth = localStorage.getItem("userData");
         if (auth) {
@@ -20,7 +30,7 @@ const SignUp = () => {
 
         let result = await fetch("http://localhost:5000/register", {
             method: "post",
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify(inputValue),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -34,15 +44,12 @@ const SignUp = () => {
     return (
         <div className='form'>
             <h1>Register</h1>
-            <input className="inputBox" type="text" placeholder="Enter Name"
-                value={name} onChange={(e) => setName(e.target.value)}
-            />
-            <input className="inputBox" type="text" placeholder="Enter Email"
-                value={email} onChange={(e) => setEmail(e.target.value)}
-            />
-            <input className="inputBox" type="password" placeholder="Enter password"
-                value={password} onChange={(e) => setPassword(e.target.value)}
-            />
+            <input name='name' className="inputBox" type="text" placeholder="Enter Name"
+                value={name} onChange={onChangeHandler} />
+            <input name='email' className="inputBox" type="text" placeholder="Enter Email"
+                value={email} onChange={onChangeHandler} />
+            <input name='password' className="inputBox" type="password" placeholder="Enter password"
+                value={password} onChange={onChangeHandler} />
             <button onClick={onSignUpHandler} className="appButton" type="button">Sign Up</button>
 
         </div>
