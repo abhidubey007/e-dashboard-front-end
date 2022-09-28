@@ -1,17 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddProduct = () => {
+const UpdateProduct = () => {
+
+    const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const [inputValue, setInputValue] = useState({
         name: '',
         price: '',
-        userId: JSON.parse(localStorage.getItem("userData"))._id,
+        userId: '',
         category: '',
         company: ''
-    });
+    })
     const { name, price, userId, category, company } = inputValue;
 
-    const [error, setError] = useState(false)
+    useEffect(() => {
+        getProductDetails()
+    }, [])
+
+    const getProductDetails = async () => {
+        let result = await fetch(`http://localhost:5000/product/${id}`)
+        result = await result.json()
+        setInputValue(result)
+    }
 
     const onChangeHandler = (e) => {
         setInputValue(() => {
@@ -21,41 +34,35 @@ const AddProduct = () => {
         })
     }
 
-    const onSubmitHandler = async () => {
-
-        if (!name || !price || !category || !company) {
-            setError(true)
-            return false;
-        }
-
-        let result = await fetch("http://localhost:5000/add-product", {
-            method: "post",
+    const updateProduct = async () => {
+        let result = await fetch(`http://localhost:5000/product/${id}`, {
+            method: 'put',
             body: JSON.stringify(inputValue),
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'Application/json'
             }
-        })
-        result = await result.json()
+        });
+        result = await result.json();
+        if (result) {
+            navigate('/')
+        }
+
     }
 
     return (
         <div className='form'>
-            <h1>Add Product</h1>
+            <h1>Update Product</h1>
             <input name='name' onChange={onChangeHandler} value={name} className='inputBox' type='text' placeholder='Product Name' />
-            {error && !name ? <span className='invalidInput'>Enter Valid Name</span> : null}
 
             <input name='price' onChange={onChangeHandler} value={price} className='inputBox' type='number' placeholder='Product Price' />
-            {error && !price ? <span className='invalidInput'>Enter Valid Price</span> : null}
 
             <input name='category' onChange={onChangeHandler} value={category} className='inputBox' type='text' placeholder='Product Category' />
-            {error && !category ? <span className='invalidInput'>Enter Valid Category</span> : null}
 
             <input name='company' onChange={onChangeHandler} value={company} className='inputBox' type='text' placeholder='Product Company' />
-            {error && !company ? <span className='invalidInput'>Enter Valid Company</span> : null}
 
-            <button type='submit' onClick={onSubmitHandler} className='appButton'>Add Product</button>
+            <button type='button' onClick={updateProduct} className='appButton'>Update</button>
         </div>
     )
 }
 
-export default AddProduct
+export default UpdateProduct

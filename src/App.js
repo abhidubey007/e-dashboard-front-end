@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import { AddProduct, Footer, Login, Navbar, PrivateComponent, SignUp } from './components'
+import { AddProduct, Footer, Login, Navbar, PrivateComponent, ProductList, SignUp, UpdateProduct } from './components'
 
 const App = () => {
   return (
@@ -9,9 +9,9 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route element={<PrivateComponent />}>
-          <Route path='/' element={<h1>Product</h1>} />
+          <Route path='/' element={<ProductList />} />
           <Route path='/add' element={<AddProduct />} />
-          <Route path='/update' element={<h1>Update Product</h1>} />
+          <Route path='/update/:id' element={<UpdateProduct />} />
           <Route path='/profile' element={<h1>Profile</h1>} />
           <Route path='/logout' element={<h1>Logout</h1>} />
         </Route>
