@@ -36,8 +36,9 @@ const Login = () => {
         })
         result = await result.json()
 
-        if (result.name) {
-            localStorage.setItem("userData", JSON.stringify(result))
+        if (result.auth) {
+            localStorage.setItem("userData", JSON.stringify(result.user))
+            localStorage.setItem("token", JSON.stringify(result.auth))
             navigate("/")
         } else {
             alert("Please enter correct Details")

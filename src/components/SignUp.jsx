@@ -37,7 +37,8 @@ const SignUp = () => {
         })
         result = await result.json()
         // console.log(result)
-        localStorage.setItem("userData", JSON.stringify(result))
+        localStorage.setItem("userData", JSON.stringify(result.result))
+        localStorage.setItem("token", JSON.stringify(result.auth))
         navigate("/")
     }
 
